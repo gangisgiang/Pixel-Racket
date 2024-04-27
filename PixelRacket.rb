@@ -111,3 +111,5 @@ end
 def hit_top?(ball)
   ball.y <= 0
 end
+
+# gay
