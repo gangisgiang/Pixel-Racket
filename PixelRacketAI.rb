@@ -17,11 +17,11 @@ class Racket
 end
 
 def move_racket(racket)
-    if racket.direction == :up
-      racket.y = [racket.y - racket.movement, 0].max
-    elsif racket.direction == :down
-      racket.y = [racket.y + racket.movement, cal_max_y_racket].min
-    end
+  if racket.direction == :up
+    racket.y = [racket.y - racket.movement, 0].max
+  elsif racket.direction == :down
+    racket.y = [racket.y + racket.movement, cal_max_y_racket].min
+  end
 end
 
 def draw_racket(player)
@@ -35,10 +35,7 @@ def hit_ball?(ball, racket)
                           size: HeightBall, color: 'blue')
   shape_racket = Rectangle.new(x: racket.x, y: racket.y, z: -1,
                                width: 15, height: HeightRacket, color: 'white')
-  shape_ball && [[shape_ball.x1, shape_ball.y1], [shape_ball.x2, shape_ball.y2],
-                 [shape_ball.x3, shape_ball.y3], [shape_ball.x4, shape_ball.y4]].any? do |coordinates|
-    shape_racket.contains?(coordinates[0], coordinates[1])
-  end
+  shape_racket.contains?(shape_ball.x, shape_ball.y)
 end
 
 def track_ball(racket, ball)
@@ -54,7 +51,7 @@ def cal_max_y_racket()
 end
 
 class Ball
-  attr_accessor :shape, :x, :y, :y_velocity, :x_velocity,
+  attr_accessor :shape_ball, :x, :y, :y_velocity, :x_velocity,
                 :speed, :last_hit_side
 
   def initialize(speed)
@@ -80,8 +77,12 @@ end
 
 def bounce(racket, ball)
   if ball.last_hit_side != racket.side
-    position = ((shape.y1 - racket.y1) / HeightRacket.to_f)
-    angle = position.clamp(0.2, 0.8) * Math::PI
+    shape_racket = Rectangle.new(x: racket.x, y: racket.y,
+                                 width: 15, height: HeightRacket, color: 'white')
+
+    if shape_racket.contains?(ball.x, ball.y)
+      position = ((ball.y - racket.y) / HeightRacket.to_f).clamp(0.2, 0.8)
+      angle = position * Math::PI
 
     if racket.side == :left
       ball.x_velocity = Math.sin(angle) * ball.speed
@@ -92,12 +93,12 @@ def bounce(racket, ball)
     end
 
     ball.last_hit_side = racket.side
-
+    end
   end
 end
 
 def out_of_bounds?(ball)
-  ball.x <= 0 || ball.x + HeightBall >= Window.height
+  ball.x <= 0 || ball.x + HeightBall >= Window.width
 end
 
 def hit_bottom?(ball)
@@ -116,4 +117,3 @@ def cal_y_middle(object)
     return object.y + (HeightBall / 2.0)
   end
 end
-

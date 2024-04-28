@@ -30,7 +30,11 @@ def handle_input_mode_select(cur_screen, event)
     when "right"
       mode_select_screen.selected_mode = (mode_select_screen.selected_mode.to_i + 1) % 2
     when "return"
-      cur_screen.type = GameScreen.new
+      if mode_select_screen.selected_mode == 0
+        cur_screen.type = GameScreen1vs1.new
+      elsif mode_select_screen.selected_mode == 1
+        cur_screen.type = GameScreenAI.new
+      end
     end
   end
   cur_screen.need_render = true
