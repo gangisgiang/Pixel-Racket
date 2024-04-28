@@ -7,7 +7,7 @@ class ModeSelect
     end
 end
   
-def render_mode_select(cur_screen)
+def draw_mode_select(cur_screen)
   mode_select_screen = cur_screen.type
   Text.new("Select Mode", x: 185, y: 100,
            size: 25, color: 'white',
@@ -22,13 +22,16 @@ end
   
 def handle_input_mode_select(cur_screen, event)
   mode_select_screen = cur_screen.type
-  case event.key
-  when "left"
-    mode_select_screen.selected_mode = (mode_select_screen.selected_mode.to_i - 1) % 2
-  when "right"
-    mode_select_screen.selected_mode = (mode_select_screen.selected_mode.to_i + 1) % 2
-  when "return"
-    cur_screen.type = TestScreen.new(mode_select_screen.selected_mode)
+  case event.type
+  when :down
+    case event.key
+    when "left"
+      mode_select_screen.selected_mode = (mode_select_screen.selected_mode.to_i - 1) % 2
+    when "right"
+      mode_select_screen.selected_mode = (mode_select_screen.selected_mode.to_i + 1) % 2
+    when "return"
+      cur_screen.type = GameScreen.new
+    end
   end
   cur_screen.need_render = true
 end
