@@ -1,5 +1,3 @@
-
-
 class Racket
   attr_accessor :side, :direction, :movement, :x, :y
   def initialize(side, movement)
@@ -8,7 +6,7 @@ class Racket
     @direction = nil
     @y = 180
     if side == :left
-      @x = 40
+      @x = 50
     elsif side == :right
       @x = 580
     end
@@ -47,14 +45,14 @@ end
 
 class Ball
   attr_accessor :shape, :x, :y, :y_velocity, :x_velocity,
-                :speed, :last_hit_side
+                :speed, :last_hit_side, :serve_side
 
-  def initialize(speed)
-    @x = 322.9
+  def initialize(speed, serve_side)
+    @x = 314.5
     @y = 240
     @speed = speed
-    @y_velocity = [-11, -10, -9, -8, 8, 9, 10, 11].shuffle.first
-    @x_velocity = [-11, -10, -9, -8, 8, 9, 10, 11].shuffle.first
+    @y_velocity = [4, 5, 6, 7, -4, -5, -6, -7].shuffle.first
+    @x_velocity = [6, 7, 8, 9].shuffle.first * (serve_side == 0 ? 1 : -1)
   end
 end
 
@@ -65,9 +63,9 @@ def move_ball(ball)
 end
 
 def track_ball(racket, ball)
-  if cal_y_middle(ball) > cal_y_middle(racket) + 10
+  if cal_y_middle(ball) > cal_y_middle(racket) + 15
     racket.y += racket.movement
-  elsif cal_y_middle(ball) < cal_y_middle(racket) - 10
+  elsif cal_y_middle(ball) < cal_y_middle(racket) - 15
     racket.y -= racket.movement
   end
 end
@@ -121,6 +119,12 @@ def cal_y_middle(object)
     return object.y + (HeightRacket / 2.0)
   when Ball
     return object.y + (HeightBall / 2.0)
+  end
+end
+
+def draw_line
+  10.times do |i|
+    Rectangle.new(x: (Window.width - 10) / 2, y: (Window.height / 10) * i, height: 15, width: 12, color: 'white')
   end
 end
 

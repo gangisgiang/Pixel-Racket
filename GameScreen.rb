@@ -5,7 +5,7 @@ class GameScreen
                 :ball, :player_score,
                 :player1, :player2,
                 :ball_velocity, :ball_moving,
-                :mode
+                :mode, :start_game, :done_game, :serve_side
   def initialize(mode)
 
     @mode = mode # 0: 1vs1, 1: AI
@@ -15,7 +15,13 @@ class GameScreen
 
     @player1 = Racket.new(:left, 8)
     @player2 = Racket.new(:right, 8)
-    @ball = Ball.new(@ball_velocity)
+
+    @serve_side = 0
+    @ball = Ball.new(@ball_velocity, @serve_side)
+
+
+    @start_game = true
+    @done_game = false
 
     @high_score = @player_score.max
 
@@ -36,6 +42,8 @@ def draw_game_screen(cur_screen)
     bounce(player2, ball)
   end
 
+  draw_line
+
   move_racket(player1)
   draw_racket(player1)
 
@@ -53,13 +61,15 @@ def draw_game_screen(cur_screen)
     game_screen.ball_moving = false
     if ball.x + HeightBall >= Window.width - 1
       game_screen.player_score[0] += 1
+      game_screen.serve_side = 0
     else
       game_screen.player_score[1] += 1
+      game_screen.serve_side = 1
     end
-    game_screen.ball = Ball.new(game_screen.ball_velocity)
+    game_screen.ball = Ball.new(game_screen.ball_velocity, game_screen.serve_side)
   end
 
-  Text.new("#{game_screen.player_score[0]}", x: 267, y: 20, size: 65,
+  Text.new("#{game_screen.player_score[0]}", x: 249, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
   Text.new("#{game_screen.player_score[1]}", x: 360, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
@@ -69,6 +79,10 @@ def draw_game_screen(cur_screen)
            color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'r' - restart", x: 10, y: 28, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
+
+  if game_screen.start_game == true
+    Text.new("Press 'space' to start", x: 165, y: 120, size: 15, color: 'black',font: 'font/PressStart2P.ttf')
+  end
 end
 
 def handle_input_game_screen(cur_screen, event)
@@ -104,10 +118,11 @@ def handle_input_game_screen(cur_screen, event)
       unless game_screen.ball_moving
         game_screen.ball_moving = true unless game_screen.ball_moving
       end
+      if game_screen.start_game == true
+        game_screen.start_game = false
+      end
     when 'r'
-      game_screen.player_score = [0, 0]
-      game_screen.ball_moving = false
-      game_screen.ball = Ball.new(game_screen.ball_velocity)
+      cur_screen.type = GameScreen.new(game_screen.mode)
     end
     when :up
       case event.key
@@ -124,3 +139,4 @@ def handle_input_game_screen(cur_screen, event)
       end
     end
 end
+
