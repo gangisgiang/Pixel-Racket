@@ -1,15 +1,17 @@
-require_relative 'PixelRacketAI'
+require_relative 'PixelRacket'
 
-class GameScreenAI
+class GameScreen
   attr_accessor :high_score, :dividing_line,
                 :ball, :player_score,
                 :player1, :player2,
-                :ball_velocity, :ball_moving
-  def initialize
+                :ball_velocity, :ball_moving,
+                :mode
+  def initialize(mode)
 
+    @mode = mode # 0: 1vs1, 1: AI
     @player_score = [0, 0]
-    @ball_velocity = 12
-    @ball_moving = true
+    @ball_velocity = 10
+    @ball_moving = false
 
     @player1 = Racket.new(:left, 8)
     @player2 = Racket.new(:right, 8)
@@ -20,7 +22,7 @@ class GameScreenAI
   end
 end
 
-def draw_game_screen_ai(cur_screen)
+def draw_game_screen(cur_screen)
   game_screen = cur_screen.type
   player1 = game_screen.player1
   player2 = game_screen.player2
@@ -37,10 +39,14 @@ def draw_game_screen_ai(cur_screen)
   move_racket(player1)
   draw_racket(player1)
 
+  if game_screen.mode == 0
+    move_racket(player2)
+  else
+    track_ball(player2, ball)
+  end
   draw_racket(player2)
-  track_ball(player2, ball)
 
-  move_ball(ball)
+  move_ball(ball) if game_screen.ball_moving
   draw_ball(ball)
 
   if out_of_bounds?(ball)
@@ -63,29 +69,58 @@ def draw_game_screen_ai(cur_screen)
            color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'r' - restart", x: 10, y: 28, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
-
 end
 
-def handle_input_game_screen_ai(cur_screen, event)
+def handle_input_game_screen(cur_screen, event)
   game_screen = cur_screen.type
   player1 = game_screen.player1
   player2 = game_screen.player2
 
   case event.type
-  when :down
+  when :held
     case event.key
+    when 'w'
+      if game_screen.mode == 0
+        player1.direction = :up
+      end
+    when 's'
+      if game_screen.mode == 0
+        player1.direction = :down
+      end
     when 'up'
-      player1.direction = :up
+      if game_screen.mode == 0
+        player2.direction = :up
+      else
+        player1.direction = :up
+      end
     when 'down'
-      player1.direction = :down
+      if game_screen.mode == 0
+        player2.direction = :down
+      else
+        player1.direction = :down
+      end
+    when 'space'
+      # Check if the ball is not already moving
+      unless game_screen.ball_moving
+        game_screen.ball_moving = true unless game_screen.ball_moving
+      end
     when 'r'
       game_screen.player_score = [0, 0]
       game_screen.ball_moving = false
       game_screen.ball = Ball.new(game_screen.ball_velocity)
     end
-  when :up
-    event.key == 'up' || event.key == 'down'
-      player2.direction = nil
-  end
-  cur_screen.need_render = true
+    when :up
+      case event.key
+      when 'w', 's'
+        if game_screen.mode == 0
+          player1.direction = nil
+        end
+      when 'up', 'down'
+        if game_screen.mode == 0
+          player2.direction = nil
+        else
+          player1.direction = nil
+        end
+      end
+    end
 end

@@ -1,5 +1,4 @@
-HeightRacket = 90
-HeightBall = 15
+
 
 class Racket
   attr_accessor :side, :direction, :movement, :x, :y
@@ -17,11 +16,11 @@ class Racket
 end
 
 def move_racket(racket)
-  if racket.direction == :up
-    racket.y = [racket.y - racket.movement, 0].max
-  elsif racket.direction == :down
-    racket.y = [racket.y + racket.movement, cal_max_y_racket].min
-  end
+    if racket.direction == :up
+      racket.y = [racket.y - racket.movement, 0].max
+    elsif racket.direction == :down
+      racket.y = [racket.y + racket.movement, cal_max_y_racket].min
+    end
 end
 
 def draw_racket(player)
@@ -31,27 +30,23 @@ end
 
 def hit_ball?(ball, racket)
   shape_ball = Square.new(x: ball.x,
-                          y: ball.y, z: -1,
-                          size: HeightBall, color: 'blue')
-  shape_racket = Rectangle.new(x: racket.x, y: racket.y, z: -1,
-                               width: 15, height: HeightRacket, color: 'white')
-  shape_racket.contains?(shape_ball.x, shape_ball.y)
-end
-
-def track_ball(racket, ball)
-  if cal_y_middle(ball) > cal_y_middle(racket) + 10
-    racket.y += racket.movement
-  elsif cal_y_middle(ball) < cal_y_middle(racket) - 10
-    racket.y -= racket.movement
+                          y: ball.y,
+                          size: HeightBall, color: 'aqua')
+  shape_racket = Rectangle.new(x: racket.x, y: racket.y,
+                               width: 15, height: HeightRacket, color: 'aqua')
+  shape_ball && [[shape_ball.x1, shape_ball.y1], [shape_ball.x2, shape_ball.y2],
+                 [shape_ball.x3, shape_ball.y3], [shape_ball.x4, shape_ball.y4]].any? do |coordinates|
+    shape_racket.contains?(coordinates[0], coordinates[1])
   end
 end
+
 
 def cal_max_y_racket()
   Window.height - HeightRacket
 end
 
 class Ball
-  attr_accessor :shape_ball, :x, :y, :y_velocity, :x_velocity,
+  attr_accessor :shape, :x, :y, :y_velocity, :x_velocity,
                 :speed, :last_hit_side
 
   def initialize(speed)
@@ -69,6 +64,14 @@ def move_ball(ball)
   ball.y += ball.y_velocity
 end
 
+def track_ball(racket, ball)
+  if cal_y_middle(ball) > cal_y_middle(racket) + 10
+    racket.y += racket.movement
+  elsif cal_y_middle(ball) < cal_y_middle(racket) - 10
+    racket.y -= racket.movement
+  end
+end
+
 def draw_ball(ball)
   Square.new(x: ball.x,
              y: ball.y,
@@ -76,26 +79,29 @@ def draw_ball(ball)
 end
 
 def bounce(racket, ball)
-  if ball.last_hit_side != racket.side
-    shape_racket = Rectangle.new(x: racket.x, y: racket.y,
-                                 width: 15, height: HeightRacket, color: 'white')
+  shape_ball = Square.new(x: ball.x,
+                          y: ball.y,
+                          size: HeightBall, color: 'aqua')
 
-    if shape_racket.contains?(ball.x, ball.y)
-      position = ((ball.y - racket.y) / HeightRacket.to_f).clamp(0.2, 0.8)
-      angle = position * Math::PI
+  shape_racket = Rectangle.new(x: racket.x, y: racket.y,
+                               width: 15, height: HeightRacket, color: 'aqua')
+  if ball.last_hit_side != racket.side
+    position = ((shape_ball.y1 - shape_racket.y1) / HeightRacket.to_f)
+    angle = position.clamp(0.2, 0.8) * Math::PI
 
     if racket.side == :left
       ball.x_velocity = Math.sin(angle) * ball.speed
-      ball.y_velocity = Math.cos(angle) * ball.speed
+      ball.y_velocity = -Math.cos(angle) * ball.speed
     else
       ball.x_velocity = -Math.sin(angle) * ball.speed
       ball.y_velocity = -Math.cos(angle) * ball.speed
     end
 
     ball.last_hit_side = racket.side
-    end
+
   end
 end
+
 
 def out_of_bounds?(ball)
   ball.x <= 0 || ball.x + HeightBall >= Window.width
@@ -117,3 +123,4 @@ def cal_y_middle(object)
     return object.y + (HeightBall / 2.0)
   end
 end
+
