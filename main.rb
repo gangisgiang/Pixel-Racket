@@ -1,13 +1,11 @@
 require 'ruby2d'
 require_relative 'ModeSelect'
 require_relative 'GameScreen'
-# require_relative 'GameScreenAI'
 HeightRacket = 90
 HeightBall = 15
 
-
 set background: 'aqua'
-set title: 'Pong'
+set title: 'Pixel Racket'
 set width: 640
 set height: 480
 

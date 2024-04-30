@@ -1,3 +1,6 @@
+WIDTH = 12
+HEIGHT = 20
+
 class Racket
   attr_accessor :side, :direction, :movement, :x, :y
   def initialize(side, movement)
@@ -27,8 +30,7 @@ def draw_racket(player)
 end
 
 def hit_ball?(ball, racket)
-  shape_ball = Square.new(x: ball.x,
-                          y: ball.y,
+  shape_ball = Square.new(x: ball.x, y: ball.y,
                           size: HeightBall, color: 'aqua')
   shape_racket = Rectangle.new(x: racket.x, y: racket.y,
                                width: 15, height: HeightRacket, color: 'aqua')
@@ -48,8 +50,8 @@ class Ball
                 :speed, :last_hit_side, :serve_side
 
   def initialize(speed, serve_side)
-    @x = 314.5
-    @y = 240
+    @x = 312
+    @y = (20 + 25) * 5 + 3
     @speed = speed
     @y_velocity = [4, 5, 6, 7, -4, -5, -6, -7].shuffle.first
     @x_velocity = [6, 7, 8, 9].shuffle.first * (serve_side == 0 ? 1 : -1)
@@ -71,18 +73,17 @@ def track_ball(racket, ball)
 end
 
 def draw_ball(ball)
-  Square.new(x: ball.x,
-             y: ball.y,
+  Square.new(x: ball.x, y: ball.y,
              size: HeightBall, color: 'blue')
 end
 
 def bounce(racket, ball)
-  shape_ball = Square.new(x: ball.x,
-                          y: ball.y,
+  shape_ball = Square.new(x: ball.x, y: ball.y,
                           size: HeightBall, color: 'aqua')
 
   shape_racket = Rectangle.new(x: racket.x, y: racket.y,
                                width: 15, height: HeightRacket, color: 'aqua')
+
   if ball.last_hit_side != racket.side
     position = ((shape_ball.y1 - shape_racket.y1) / HeightRacket.to_f)
     angle = position.clamp(0.2, 0.8) * Math::PI
@@ -122,9 +123,27 @@ def cal_y_middle(object)
   end
 end
 
-def draw_line
-  10.times do |i|
-    Rectangle.new(x: (Window.width - 10) / 2, y: (Window.height / 10) * i, height: 15, width: 12, color: 'white')
+def draw_dividing_line
+  number_of_line = Window.height / (HEIGHT + 25) + 10
+  number_of_line.times do |i|
+    Rectangle.new(x: (Window.width - WIDTH) / 2, y: (HEIGHT + 25) * i, height: HEIGHT, width: WIDTH, color: 'white')
   end
 end
 
+def get_high_score()
+  high_score = 0
+  if File.exist?("high_score.txt")
+    file = File.new('high_score.txt', 'r')
+    high_score = file.gets.to_i
+    file.close
+  end
+  return high_score
+end
+
+def save_score(player_scores)
+  old_high_score = get_high_score
+  file = File.new('high_score.txt', 'w')
+  high_score = [old_high_score, player_scores.max].max
+  file.puts high_score
+  file.close
+end

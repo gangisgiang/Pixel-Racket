@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="721ad4be-9f86-46c8-80cd-4ce92d8ee2be" name="Changes" comment="" />
+    <list default="true" id="721ad4be-9f86-46c8-80cd-4ce92d8ee2be" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/GameScreen.rb" beforeDir="false" afterPath="$PROJECT_DIR$/GameScreen.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModeSelect.rb" beforeDir="false" afterPath="$PROJECT_DIR$/ModeSelect.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PixelRacket.rb" beforeDir="false" afterPath="$PROJECT_DIR$/PixelRacket.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.rb" beforeDir="false" afterPath="$PROJECT_DIR$/main.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test.rb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -22,8 +31,10 @@
   "keyToString": {
     "Ruby.PixelRacket.executor": "Run",
     "Ruby.main.executor": "Run",
+    "Ruby.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/guest1/Documents/pingpong(1)",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/guest1/Documents/Pixel Racket",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -51,6 +62,7 @@
       <updated>1714178807609</updated>
       <workItem from="1714178808576" duration="208000" />
       <workItem from="1714179018812" duration="6753000" />
+      <workItem from="1714381904290" duration="708000" />
     </task>
     <servers />
   </component>
@@ -58,7 +70,9 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Pixel_Racket@test.rcov" NAME="test Coverage Results" MODIFIED="1714382560311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="Pixel Racket" />
     <SUITE FILE_PATH="coverage/pingpong_1_@PixelRacket.rcov" NAME="PixelRacket Coverage Results" MODIFIED="1714185444166" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
+    <SUITE FILE_PATH="coverage/Pixel_Racket@main.rcov" NAME="main Coverage Results" MODIFIED="1714382422638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="Pixel Racket" />
     <SUITE FILE_PATH="coverage/pingpong_1_@main.rcov" NAME="main Coverage Results" MODIFIED="1714185057155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
   </component>
 </project>
