@@ -67,12 +67,10 @@ def handle_input_mode_select(cur_screen, event)
          mode_select_screen.selected_difficulty = (mode_select_screen.selected_difficulty.to_i + 1) % 3
       end
       when 'return'
-        if mode_select_screen.selected_mode == 0 || mode_select_screen.selected_difficulty == 0
-         cur_screen.type = GameScreen.new(mode_select_screen.selected_mode,
+          cur_screen.type = GameScreen.new(mode_select_screen.selected_mode,
                                             mode_select_screen.difficulties[mode_select_screen.selected_difficulty])
         end
     end
-  end
   end
 
 
