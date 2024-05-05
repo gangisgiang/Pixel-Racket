@@ -1,4 +1,5 @@
 require_relative 'PixelRacket'
+# require_relative 'HighScore'
 
 class GameScreen
   attr_accessor :mode, :difficulty, :player_scores,
@@ -37,7 +38,7 @@ end
 
 def draw_game_screen(cur_screen)
   game_screen = cur_screen.type
-  # save_score(game_screen.player_scores)
+  save_score(game_screen.player_scores, game_screen.mode)
 
   player1 = game_screen.player1
   player2 = game_screen.player2
@@ -79,23 +80,13 @@ def draw_game_screen(cur_screen)
                                 game_screen.serve_side)
   end
 
-  if game_screen.mode == 0  # 1 vs 1 mode
-    high_score = [game_screen.player_scores[0],
-                  game_screen.player_scores[1]].max
-  else  # VS Computer mode
-    high_score = game_screen.player_scores[0]
-    if high_score > get_high_score
-      high_score = game_screen.player_scores[0]
-      save_score(high_score)
-    end
-  end
 
   Text.new("#{game_screen.player_scores[0]}", x: 249, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
   Text.new("#{game_screen.player_scores[1]}", x: 360, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
-  # Text.new("High Score: #{high_score}", x: 470, y: 10, size: 12,
-  #          color: 'black', font: 'font/PressStart2P.ttf')
+  Text.new("High Score: #{get_high_score}", x: 470, y: 10, size: 12,
+           color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'m' - mute", x: 10, y: 10, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'r' - restart", x: 10, y: 28, size: 10,
