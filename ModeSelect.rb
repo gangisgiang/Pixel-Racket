@@ -34,6 +34,8 @@ def draw_mode_select(cur_screen)
       mode_select_screen.difficulty_text = false  # Hide difficulty text for other modes
     end
   end
+end
+
 
 def handle_input_mode_select(cur_screen, event)
   mode_select_screen = cur_screen.type
@@ -55,10 +57,9 @@ def handle_input_mode_select(cur_screen, event)
       when 'return'
          cur_screen.type = GameScreen.new(mode_select_screen.selected_mode,
                                             mode_select_screen.difficulties[mode_select_screen.selected_difficulty])
-      end
+        end
+    end
   end
-  end
-end
 
 
 
