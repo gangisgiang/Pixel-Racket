@@ -1,7 +1,7 @@
 require_relative 'PixelRacket'
 
 class GameScreen
-  attr_accessor :mode, :difficulties, :difficulty, :player_scores,
+  attr_accessor :mode, :difficulty, :player_scores,
                 :ball_velocity, :ball_moving,
                 :player1, :player2,
                 :serve_side, :ball,
@@ -16,17 +16,18 @@ class GameScreen
       @ball_velocity = 8
       @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
     when 'Medium'
-      @ball_velocity = 9
+      @ball_velocity = 8
       @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
     when 'Hard'
       @ball_velocity = 10
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 6.5)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 7)
     end
     @player_scores = [0, 0]
     @ball_moving = false
     @serve_side = 0
 
     @player1 = Racket.new(:left, 8)
+    @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
 
     @ball = Ball.new(@ball_velocity, @serve_side)
 
@@ -36,7 +37,7 @@ end
 
 def draw_game_screen(cur_screen)
   game_screen = cur_screen.type
-  save_score(game_screen.player_scores)
+  # save_score(game_screen.player_scores)
 
   player1 = game_screen.player1
   player2 = game_screen.player2
@@ -74,19 +75,27 @@ def draw_game_screen(cur_screen)
       game_screen.player_scores[1] += 1
       game_screen.serve_side = 1
     end
-    game_screen.ball = Ball.new(game_screen.ball_velocity, game_screen.serve_side)
+    game_screen.ball = Ball.new(game_screen.ball_velocity,
+                                game_screen.serve_side)
   end
 
-  if game_screen.mode == 1 && game_screen.player_scores[0] >= get_high_score
-    get_high_score = game_screen.player_scores[0]
+  if game_screen.mode == 0  # 1 vs 1 mode
+    high_score = [game_screen.player_scores[0],
+                  game_screen.player_scores[1]].max
+  else  # VS Computer mode
+    high_score = game_screen.player_scores[0]
+    if high_score > get_high_score
+      high_score = game_screen.player_scores[0]
+      save_score(high_score)
+    end
   end
 
   Text.new("#{game_screen.player_scores[0]}", x: 249, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
   Text.new("#{game_screen.player_scores[1]}", x: 360, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
-  Text.new("High Score: #{get_high_score}", x: 470, y: 10, size: 12,
-           color: 'black', font: 'font/PressStart2P.ttf')
+  # Text.new("High Score: #{high_score}", x: 470, y: 10, size: 12,
+  #          color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'m' - mute", x: 10, y: 10, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'r' - restart", x: 10, y: 28, size: 10,
@@ -95,7 +104,9 @@ def draw_game_screen(cur_screen)
            color: 'black', font: 'font/PressStart2P.ttf')
 
   if game_screen.start_game == true
-    Text.new("Press 'space' to start", x: 165, y: 116, size: 15, color: 'black',font: 'font/PressStart2P.ttf')
+    Text.new("Press 'space' to start", x: 165, y: 116,
+             size: 15, color: 'black',
+             font: 'font/PressStart2P.ttf')
   end
 end
 
@@ -136,7 +147,8 @@ def handle_input_game_screen(cur_screen, event)
         game_screen.start_game = false
       end
     when 'r', 'esc'
-      cur_screen.type = GameScreen.new(game_screen.mode, game_screen.difficulty)
+      cur_screen.type = GameScreen.new(game_screen.mode,
+                                       game_screen.difficulty)
     when 'escape'
       cur_screen.type = ModeSelect.new
     end

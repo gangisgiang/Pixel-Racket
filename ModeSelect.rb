@@ -8,7 +8,7 @@ class ModeSelect
       @selected_difficulty = 0
     end
 end
-  
+
 def draw_mode_select(cur_screen)
   Text.new('Pixel Racket', x: 177, y: 80,
            size: 25, color: 'black',
@@ -19,8 +19,8 @@ def draw_mode_select(cur_screen)
            font: 'font/PressStart2P.ttf')
 
   mode_select_screen.modes.each_with_index do |mode, index|
-    Text.new(mode, x: 140 + index * 250, y: 250,
-             size: 14, color: index == mode_select_screen.selected_mode ? 'blue' : 'white',
+    Text.new(mode, x: 140 + index * 250, y: 250, size: 14,
+             color: index == mode_select_screen.selected_mode ? 'blue' : 'white',
              font: 'font/PressStart2P.ttf')
     mode_select_screen = cur_screen.type
     if mode_select_screen.selected_mode == 1  # Show difficulty text only for VS Computer mode
@@ -34,8 +34,7 @@ def draw_mode_select(cur_screen)
       mode_select_screen.difficulty_text = false  # Hide difficulty text for other modes
     end
   end
-  end
-  
+
 def handle_input_mode_select(cur_screen, event)
   mode_select_screen = cur_screen.type
   case event.type
@@ -46,21 +45,23 @@ def handle_input_mode_select(cur_screen, event)
       when 'right'
         mode_select_screen.selected_mode = (mode_select_screen.selected_mode.to_i + 1) % 2
       when 'up'
-        if mode_select_screen.selected_mode == 1
-        mode_select_screen.selected_difficulty = (mode_select_screen.selected_difficulty.to_i - 1) % 3
-        end
+      if mode_select_screen.selected_mode == 1
+         mode_select_screen.selected_difficulty = (mode_select_screen.selected_difficulty.to_i - 1) % 3
+      end
       when 'down'
-        if mode_select_screen.selected_mode == 1
-        mode_select_screen.selected_difficulty = (mode_select_screen.selected_difficulty.to_i + 1) % 3
-        end
+      if mode_select_screen.selected_mode == 1
+         mode_select_screen.selected_difficulty = (mode_select_screen.selected_difficulty.to_i + 1) % 3
+      end
       when 'return'
-        if mode_select_screen.selected_mode == 0
-          cur_screen.type = GameScreen.new(mode_select_screen.selected_mode)
-        elsif mode_select_screen.selected_mode == 1
-          cur_screen.type = GameScreen.new(mode_select_screen.selected_mode, mode_select_screen.difficulties[mode_select_screen.selected_difficulty])
-        end
+         cur_screen.type = GameScreen.new(mode_select_screen.selected_mode,
+                                            mode_select_screen.difficulties[mode_select_screen.selected_difficulty])
       end
   end
+  end
 end
+
+
+
+
 
 

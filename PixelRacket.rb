@@ -54,7 +54,7 @@ class Ball
     @y = (20 + 25) * 5 + 3
     @speed = speed
     @y_velocity = [4, 5, 6, 7, -4, -5, -6, -7].shuffle.first
-    @x_velocity = [6, 7, 8, 9].shuffle.first * (serve_side == 0 ? 1 : -1)
+    @x_velocity = [5, 6, 7, 8].shuffle.first * (serve_side == 0 ? 1 : -1)
   end
 end
 
@@ -82,7 +82,8 @@ def bounce(racket, ball)
                           size: HeightBall, color: 'aqua')
 
   shape_racket = Rectangle.new(x: racket.x, y: racket.y,
-                               width: 15, height: HeightRacket, color: 'aqua')
+                               width: 15, height: HeightRacket,
+                               color: 'aqua')
 
   if ball.last_hit_side != racket.side
     position = ((shape_ball.y1 - shape_racket.y1) / HeightRacket.to_f)
@@ -126,7 +127,8 @@ end
 def draw_dividing_line
   number_of_line = Window.height / (HEIGHT + 25) + 10
   number_of_line.times do |i|
-    Rectangle.new(x: (Window.width - WIDTH) / 2, y: (HEIGHT + 25) * i, height: HEIGHT, width: WIDTH, color: 'white')
+    Rectangle.new(x: (Window.width - WIDTH) / 2, y: (HEIGHT + 25) * i,
+                  height: HEIGHT, width: WIDTH, color: 'white')
   end
 end
 
