@@ -53,7 +53,7 @@ class Ball
     @x = 312
     @y = (20 + 25) * 5 + 3
     @speed = speed
-    @y_velocity = [4, 5, 6, 7, -4, -5, -6, -7].to_a.sample
+    @y_velocity = [4, 5, 6 -4, -5, -6].to_a.sample
     @x_velocity = [5, 6, 7, 8].to_a.sample * (serve_side == 0 ? 1 : -1)
   end
 end
