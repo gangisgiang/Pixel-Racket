@@ -8,7 +8,7 @@ class GameScreen
                 :ball_velocity, :ball_moving,
                 :player1, :player2,
                 :serve_side, :ball,
-                :start_game, :dividing_line, :music_play
+                :start_game, :dividing_line
   def initialize(mode, difficulty)
 
     @mode = mode # 0: 1vs1, 1: AI
@@ -31,11 +31,13 @@ class GameScreen
 
     @player1 = Racket.new(:left, 8)
 
+    if mode == 0
+      @ball_velocity = 8
+    end
+
     @ball = Ball.new(@ball_velocity, @serve_side)
 
     @start_game = true
-
-    @music_play = true
   end
 end
 
@@ -150,7 +152,6 @@ def handle_input_game_screen(cur_screen, event)
     when :up
       case event.key
       when 'w', 's'
-        puts event.key
         if game_screen.mode == 0
           player1.direction = nil
         end
