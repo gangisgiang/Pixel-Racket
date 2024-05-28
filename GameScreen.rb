@@ -1,12 +1,14 @@
 require_relative 'PixelRacket'
-# require_relative 'HighScore'
+
+PONG_SOUND = Sound.new('sound/pong.wav')
+PING_SOUND = Sound.new('sound/ping.wav')
 
 class GameScreen
   attr_accessor :mode, :difficulty, :player_scores,
                 :ball_velocity, :ball_moving,
                 :player1, :player2,
                 :serve_side, :ball,
-                :start_game, :dividing_line
+                :start_game, :dividing_line, :music_play
   def initialize(mode, difficulty)
 
     @mode = mode # 0: 1vs1, 1: AI
@@ -14,25 +16,26 @@ class GameScreen
     @difficulty = difficulty
     case difficulty
     when 'Easy'
-      @ball_velocity = 8
+      @ball_velocity = 6
       @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
     when 'Medium'
       @ball_velocity = 8
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 6)
     when 'Hard'
-      @ball_velocity = 10
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 7)
+      @ball_velocity = 9
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 11)
     end
     @player_scores = [0, 0]
     @ball_moving = false
     @serve_side = 0
 
     @player1 = Racket.new(:left, 8)
-    @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
 
     @ball = Ball.new(@ball_velocity, @serve_side)
 
     @start_game = true
+
+    @music_play = true
   end
 end
 
@@ -46,10 +49,12 @@ def draw_game_screen(cur_screen)
 
   if hit_ball?(ball, player1)
     bounce(player1, ball)
+    PING_SOUND.play
   end
 
   if hit_ball?(ball, player2)
     bounce(player2, ball)
+    PING_SOUND.play
   end
 
   draw_dividing_line
@@ -65,6 +70,7 @@ def draw_game_screen(cur_screen)
   draw_racket(player2)
 
   move_ball(ball) if game_screen.ball_moving
+  PONG_SOUND.play if hit_bottom?(ball) || hit_top?(ball)
   draw_ball(ball)
 
   if out_of_bounds?(ball)
@@ -81,17 +87,15 @@ def draw_game_screen(cur_screen)
   end
 
 
-  Text.new("#{game_screen.player_scores[0]}", x: 249, y: 20, size: 65,
+  Text.new("#{game_screen.player_scores[0]}", x: 240, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
   Text.new("#{game_screen.player_scores[1]}", x: 360, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
   Text.new("High Score: #{get_high_score}", x: 470, y: 10, size: 12,
            color: 'black', font: 'font/PressStart2P.ttf')
-  Text.new("'m' - mute", x: 10, y: 10, size: 10,
+  Text.new("'r' - restart", x: 10, y: 10, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
-  Text.new("'r' - restart", x: 10, y: 28, size: 10,
-           color: 'black', font: 'font/PressStart2P.ttf')
-  Text.new("'esc' - menu", x: 10, y: 460, size: 10,
+  Text.new("'esc' - menu", x: 10, y: 28, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
 
   if game_screen.start_game == true
