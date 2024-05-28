@@ -30,6 +30,7 @@ class GameScreen
     @serve_side = 0
 
     @player1 = Racket.new(:left, 8)
+
     if mode == 0
       @ball_velocity = 8
     end
