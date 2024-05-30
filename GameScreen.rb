@@ -91,7 +91,7 @@ def draw_game_screen(cur_screen)
 
   #if the score of each side is 10, the game will be reset
   if game_screen.mode == 0
-      if game_screen.player_scores[0] == 10
+      if game_screen.player_scores[0] == 11
         game_screen.end_game = true
         Rectangle.new(
           x: 150, y: 140,
@@ -105,7 +105,7 @@ def draw_game_screen(cur_screen)
         Text.new("Press 'return' to restart", x: 164, y: 250,
                 size: 13, color: 'aqua', z: 2,
                 font: 'font/PressStart2P.ttf')
-      elsif game_screen.player_scores[1] == 10
+      elsif game_screen.player_scores[1] == 11
         game_screen.end_game = true
         Rectangle.new(
           x: 150, y: 140,
@@ -176,9 +176,15 @@ def draw_game_screen(cur_screen)
     Text.new("Press 'space' to start", x: 165, y: 116,
              size: 15, color: 'black',
              font: 'font/PressStart2P.ttf')
-    Text.new("Reach 10 points first to win", x: 144, y: 161,
-    size: 14, color: 'black',
-    font: 'font/PressStart2P.ttf')
+    if game_screen.mode == 0
+    Text.new("Reach 11 points first to win", x: 144, y: 161,
+              size: 14, color: 'black',
+              font: 'font/PressStart2P.ttf')
+    else
+    Text.new("Reach 99 points first to win", x: 144, y: 161,
+             size: 14, color: 'black',
+             font: 'font/PressStart2P.ttf')
+    end
   end
 end
 
