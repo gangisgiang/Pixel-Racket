@@ -8,7 +8,8 @@ class GameScreen
                 :ball_velocity, :ball_moving,
                 :player1, :player2,
                 :serve_side, :ball,
-                :start_game, :end_game, :dividing_line
+                :start_game, :end_game, 
+                :dividing_line
 
   def initialize(mode, difficulty)
     @mode = mode # 0: 1vs1, 1: AI
@@ -17,13 +18,13 @@ class GameScreen
     case difficulty
     when 'Easy'
       @ball_velocity = 7
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 2)
     when 'Medium'
       @ball_velocity = 8
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 2)
     when 'Hard'
       @ball_velocity = 9
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 11)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 1)
     end
     @player_scores = [0, 0]
     @ball_moving = false
@@ -45,7 +46,7 @@ end
 
 def draw_game_screen(cur_screen)
   game_screen = cur_screen.type
-  save_score(game_screen.player_scores, game_screen.mode)
+  save_score(game_screen.player_scores, game_screen.mode, game_screen.difficulty)
 
   player1 = game_screen.player1
   player2 = game_screen.player2
@@ -93,66 +94,55 @@ def draw_game_screen(cur_screen)
   if game_screen.mode == 0
       if game_screen.player_scores[0] == 11
         game_screen.end_game = true
-        Rectangle.new(
-          x: 150, y: 140,
-          width: 354, height: 170,
-          color: 'navy',
-          z: 1
-        )
-        Text.new("PLAYER 1 WIN!", x: 208, y: 160,
-                size: 18, color: 'white', z: 2,
-                font: 'font/PressStart2P.ttf')
-        Text.new("Press 'return' to restart", x: 164, y: 250,
-                size: 13, color: 'aqua', z: 2,
-                font: 'font/PressStart2P.ttf')
+          Rectangle.new(x: 150, y: 140,
+                        width: 354, height: 170, 
+                        color: 'navy', z: 1)
+          Text.new("PLAYER 1 WIN!", x: 208, y: 160,
+                  size: 18, color: 'white', z: 2,
+                  font: 'font/PressStart2P.ttf')
+          Text.new("Press 'return' to restart", x: 164, y: 250,
+                  size: 13, color: 'aqua', z: 2,
+                  font: 'font/PressStart2P.ttf')
       elsif game_screen.player_scores[1] == 11
         game_screen.end_game = true
-        Rectangle.new(
-          x: 150, y: 140,
-          width: 354, height: 170,
-          color: 'navy',
-          z: 1
-        )
-        Text.new("PLAYER 2 WIN!", x: 208, y: 160,
-                size: 18, color: 'white', z: 2,
-                font: 'font/PressStart2P.ttf')
-        Text.new("Press 'return' to restart", x: 164, y: 250,
-                size: 13, color: 'aqua', z: 2,
-                font: 'font/PressStart2P.ttf')
+          Rectangle.new(x: 150, y: 140,
+                        width: 354, height: 170, 
+                        color: 'navy', z: 1)
+          Text.new("PLAYER 2 WIN!", x: 208, y: 160,
+                  size: 18, color: 'white', z: 2,
+                  font: 'font/PressStart2P.ttf')
+          Text.new("Press 'return' to restart", x: 164, y: 250,
+                  size: 13, color: 'aqua', z: 2,
+                  font: 'font/PressStart2P.ttf')
       end
 
-    else
+  else
 
-        if game_screen.player_scores[0] == 99
-          game_screen.end_game = true
-          Rectangle.new(
-          x: 150, y: 140,
-          width: 354, height: 170,
-          color: 'navy',
-          z: 1
-        )
+      if game_screen.player_scores[0] == 99
+        game_screen.end_game = true
+          Rectangle.new(x: 150, y: 140,
+                      width: 354, height: 170, 
+                      color: 'navy', z: 1)
           Text.new("YOU WIN!", x: 240, y: 160,
                   size: 18, color: 'white', z: 2,
                   font: 'font/PressStart2P.ttf')
           Text.new("Press 'return' to restart", x: 164, y: 250,
                   size: 13, color: 'aqua', z: 2,
                   font: 'font/PressStart2P.ttf')
-        elsif game_screen.player_scores[1] == 99
-          game_screen.end_game = true
-          Rectangle.new(
-          x: 150, y: 140,
-          width: 354, height: 170,
-          color: 'navy',
-          z: 1
-        )
+      elsif game_screen.player_scores[1] == 99
+        game_screen.end_game = true
+          Rectangle.new(x: 150, y: 140,
+                      width: 354, height: 170, 
+                      color: 'navy', z: 1)
           Text.new("YOU LOSE!", x: 240, y: 160,
                   size: 18, color: 'white', z: 2,
                   font: 'font/PressStart2P.ttf')
           Text.new("Press 'return' to restart", x: 164, y: 250,
                   size: 13, color: 'aqua', z: 2,
                   font: 'font/PressStart2P.ttf')
-        end
+      end
   end
+
   if game_screen.player_scores[0] < 10
   Text.new("#{game_screen.player_scores[0]}", x: 240, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
@@ -163,10 +153,23 @@ def draw_game_screen(cur_screen)
   end
   Text.new("#{game_screen.player_scores[1]}", x: 360, y: 20, size: 65,
            color: 'blue', font: 'font/Bradley Hand Bold.ttf')
+
   if game_screen.mode == 1
-  Text.new("High Score:#{get_high_score}", x: 470, y: 10, size: 12,
-           color: 'black', font: 'font/PressStart2P.ttf')
+    high_scores = get_high_score
+  
+    case game_screen.difficulty
+    when 'Easy'
+      Text.new("High Score: #{high_scores[0]}", x: 470, y: 10, size: 12,
+              color: 'black', font: 'font/PressStart2P.ttf')
+    when 'Medium'
+      Text.new("High Score: #{high_scores[1]}", x: 470, y: 10, size: 12,
+              color: 'black', font: 'font/PressStart2P.ttf')
+    when 'Hard'
+      Text.new("High Score: #{high_scores[2]}", x: 470, y: 10, size: 12,
+              color: 'black', font: 'font/PressStart2P.ttf')
+    end
   end
+
   Text.new("'r' - restart", x: 10, y: 10, size: 10,
            color: 'black', font: 'font/PressStart2P.ttf')
   Text.new("'esc' - menu", x: 10, y: 28, size: 10,
@@ -236,6 +239,7 @@ def handle_input_game_screen(cur_screen, event)
         cur_screen.type = GameScreen.new(game_screen.mode, game_screen.difficulty)
       end
     end
+
     when :up
       case event.key
       when 'w', 's'
