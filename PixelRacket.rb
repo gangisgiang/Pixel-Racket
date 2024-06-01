@@ -1,258 +1,173 @@
-require_relative 'PixelRacket'
+  WIDTH = 12
+  HEIGHT = 20
 
-PONG_SOUND = Sound.new('sound/pong.wav')
-PING_SOUND = Sound.new('sound/ping.wav')
-
-class GameScreen
-  attr_accessor :mode, :difficulty, :player_scores,
-                :ball_velocity, :ball_moving,
-                :player1, :player2,
-                :serve_side, :ball,
-                :start_game, :end_game, 
-                :dividing_line
-
-  def initialize(mode, difficulty)
-    @mode = mode # 0: 1vs1, 1: AI
-    # @difficulties = ['Easy', 'Medium', 'Hard']
-    @difficulty = difficulty
-    case difficulty
-    when 'Easy'
-      @ball_velocity = 7
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 2)
-    when 'Medium'
-      @ball_velocity = 8
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 2)
-    when 'Hard'
-      @ball_velocity = 9
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 1)
-    end
-    @player_scores = [0, 0]
-    @ball_moving = false
-    @serve_side = 0
-
-    @player1 = Racket.new(:left, 8)
-
-    if mode == 0
-      @ball_velocity = 8
-    end
-
-    @ball = Ball.new(@ball_velocity, @serve_side)
-
-    @start_game = true
-
-    @end_game = false
-  end
-end
-
-def draw_game_screen(cur_screen)
-  game_screen = cur_screen.type
-  save_score(game_screen.player_scores, game_screen.mode, game_screen.difficulty)
-
-  player1 = game_screen.player1
-  player2 = game_screen.player2
-  ball = game_screen.ball
-
-  if hit_ball?(ball, player1)
-    bounce(player1, ball)
-    PING_SOUND.play
-  end
-
-  if hit_ball?(ball, player2)
-    bounce(player2, ball)
-    PING_SOUND.play
-  end
-
-  draw_dividing_line
-
-  move_racket(player1)
-  draw_racket(player1)
-
-  if game_screen.mode == 0
-    move_racket(player2)
-  else
-    track_ball(player2, ball)
-  end
-  draw_racket(player2)
-
-  move_ball(ball) if game_screen.ball_moving
-  PONG_SOUND.play if hit_bottom?(ball) || hit_top?(ball)
-  draw_ball(ball)
-
-  if out_of_bounds?(ball)
-    game_screen.ball_moving = false
-    if ball.x + HeightBall >= Window.width - 1
-      game_screen.player_scores[0] += 1
-      game_screen.serve_side = 0
-    else
-      game_screen.player_scores[1] += 1
-      game_screen.serve_side = 1
-    end
-    game_screen.ball = Ball.new(game_screen.ball_velocity, game_screen.serve_side)
-  end
-
-  #if the score of each side is 10, the game will be reset
-  if game_screen.mode == 0
-      if game_screen.player_scores[0] == 11
-        game_screen.end_game = true
-          Rectangle.new(x: 150, y: 140,
-                        width: 354, height: 170, 
-                        color: 'navy', z: 1)
-          Text.new("PLAYER 1 WIN!", x: 208, y: 160,
-                  size: 18, color: 'white', z: 2,
-                  font: 'font/PressStart2P.ttf')
-          Text.new("Press 'return' to restart", x: 164, y: 250,
-                  size: 13, color: 'aqua', z: 2,
-                  font: 'font/PressStart2P.ttf')
-      elsif game_screen.player_scores[1] == 11
-        game_screen.end_game = true
-          Rectangle.new(x: 150, y: 140,
-                        width: 354, height: 170, 
-                        color: 'navy', z: 1)
-          Text.new("PLAYER 2 WIN!", x: 208, y: 160,
-                  size: 18, color: 'white', z: 2,
-                  font: 'font/PressStart2P.ttf')
-          Text.new("Press 'return' to restart", x: 164, y: 250,
-                  size: 13, color: 'aqua', z: 2,
-                  font: 'font/PressStart2P.ttf')
+  class Racket
+    attr_accessor :side, :direction, :movement, :x, :y
+    def initialize(side, movement)
+      @side = side
+      @movement = movement
+      @direction = nil
+      @y = 180
+      if side == :left
+        @x = 50
+      elsif side == :right
+        @x = 580
       end
+    end
+  end
 
-  else
-
-      if game_screen.player_scores[0] == 99
-        game_screen.end_game = true
-          Rectangle.new(x: 150, y: 140,
-                      width: 354, height: 170, 
-                      color: 'navy', z: 1)
-          Text.new("YOU WIN!", x: 240, y: 160,
-                  size: 18, color: 'white', z: 2,
-                  font: 'font/PressStart2P.ttf')
-          Text.new("Press 'return' to restart", x: 164, y: 250,
-                  size: 13, color: 'aqua', z: 2,
-                  font: 'font/PressStart2P.ttf')
-      elsif game_screen.player_scores[1] == 99
-        game_screen.end_game = true
-          Rectangle.new(x: 150, y: 140,
-                      width: 354, height: 170, 
-                      color: 'navy', z: 1)
-          Text.new("YOU LOSE!", x: 240, y: 160,
-                  size: 18, color: 'white', z: 2,
-                  font: 'font/PressStart2P.ttf')
-          Text.new("Press 'return' to restart", x: 164, y: 250,
-                  size: 13, color: 'aqua', z: 2,
-                  font: 'font/PressStart2P.ttf')
+  def move_racket(racket)
+      if racket.direction == :up
+        racket.y = [racket.y - racket.movement, 0].max
+      elsif racket.direction == :down
+        racket.y = [racket.y + racket.movement, cal_max_y_racket].min
       end
   end
 
-  if game_screen.player_scores[0] < 10
-  Text.new("#{game_screen.player_scores[0]}", x: 240, y: 20, size: 65,
-           color: 'blue', font: 'font/Bradley Hand Bold.ttf')
+  def draw_racket(player)
+    Rectangle.new(x: player.x, y: player.y,
+                  width: 15, height: HeightRacket, color: 'white')
   end
-  if game_screen.player_scores[0] >= 10
-  Text.new("#{game_screen.player_scores[0]}", x: 230, y: 20, size: 65,
-          color: 'blue', font: 'font/Bradley Hand Bold.ttf')
-  end
-  Text.new("#{game_screen.player_scores[1]}", x: 360, y: 20, size: 65,
-           color: 'blue', font: 'font/Bradley Hand Bold.ttf')
 
-  if game_screen.mode == 1
+  def hit_ball?(ball, racket)
+    shape_ball = Square.new(x: ball.x, y: ball.y,
+                            size: HeightBall, color: 'aqua')
+    shape_racket = Rectangle.new(x: racket.x, y: racket.y,
+                                 width: 15, height: HeightRacket, color: 'aqua')
+    shape_ball && [[shape_ball.x1, shape_ball.y1], [shape_ball.x2, shape_ball.y2],
+                   [shape_ball.x3, shape_ball.y3], [shape_ball.x4, shape_ball.y4]].any? do |coordinates|
+      shape_racket.contains?(coordinates[0], coordinates[1])
+    end
+  end
+
+  def cal_max_y_racket()
+    Window.height - HeightRacket
+  end
+
+  class Ball
+    attr_accessor :shape, :x, :y, :y_velocity, :x_velocity,
+                  :speed, :last_hit_side, :serve_side
+
+    def initialize(speed, serve_side)
+      @x = 312
+      @y = 228
+      @speed = speed
+      @y_velocity = [4, 5, 6 -4, -5, -6].to_a.sample
+      @x_velocity = [5, 6].to_a.sample * (serve_side == 0 ? 1 : -1)
+    end
+  end
+
+  def move_ball(ball)
+    ball.y_velocity = -ball.y_velocity if hit_bottom?(ball) || hit_top?(ball)
+    ball.x += ball.x_velocity
+    ball.y += ball.y_velocity
+  end
+
+  def track_ball(racket, ball)
+    if cal_y_middle(ball) > cal_y_middle(racket) + 15
+      racket.y += racket.movement
+    elsif cal_y_middle(ball) < cal_y_middle(racket) - 15
+      racket.y -= racket.movement
+    end
+  end
+
+  def draw_ball(ball)
+    Square.new(x: ball.x, y: ball.y,
+               size: HeightBall, color: 'blue')
+  end
+
+  def bounce(racket, ball)
+    shape_ball = Square.new(x: ball.x, y: ball.y,
+                            size: HeightBall, color: 'aqua')
+
+    shape_racket = Rectangle.new(x: racket.x, y: racket.y,
+                                 width: 15, height: HeightRacket,
+                                 color: 'aqua')
+
+    if ball.last_hit_side != racket.side
+      position = ((shape_ball.y1 - shape_racket.y1) / HeightRacket.to_f)
+      angle = position.clamp(0.2, 0.8) * Math::PI
+
+      if racket.side == :left
+        ball.x_velocity = Math.sin(angle) * ball.speed
+        ball.y_velocity = -Math.cos(angle) * ball.speed
+      else
+        ball.x_velocity = -Math.sin(angle) * ball.speed
+        ball.y_velocity = -Math.cos(angle) * ball.speed
+      end
+
+      ball.last_hit_side = racket.side
+
+    end
+  end
+
+
+  def out_of_bounds?(ball)
+    ball.x <= 0 || ball.x + HeightBall >= Window.width
+  end
+
+  def hit_bottom?(ball)
+    ball.y + HeightBall >= Window.height
+  end
+
+  def hit_top?(ball)
+    ball.y <= 0
+  end
+
+  def cal_y_middle(object)
+    case object
+    when Racket
+      return object.y + (HeightRacket / 2.0)
+    when Ball
+      return object.y + (HeightBall / 2.0)
+    end
+  end
+
+  def draw_dividing_line
+    number_of_line = Window.height / (HEIGHT + 25) + 10
+    number_of_line.times do |i|
+      Rectangle.new(x: (Window.width - WIDTH) / 2, y: (HEIGHT + 25) * i,
+                    height: HEIGHT, width: WIDTH, color: 'white')
+    end
+  end
+
+  def get_high_score()
+    high_scores = [0, 0, 0]
+
+    if File.exist?("high_score.txt")
+      file = File.new('high_score.txt', 'r')
+        i = 0
+      while (line = file.gets)
+        high_scores[i] = line.to_i
+        i += 1
+      end
+      file.close
+    end
+
+    return high_scores
+  end
+
+  def save_score(player_scores, mode, difficulty)
     high_scores = get_high_score
-  
-    case game_screen.difficulty
-    when 'Easy'
-      Text.new("High Score: #{high_scores[0]}", x: 470, y: 10, size: 12,
-              color: 'black', font: 'font/PressStart2P.ttf')
-    when 'Medium'
-      Text.new("High Score: #{high_scores[1]}", x: 470, y: 10, size: 12,
-              color: 'black', font: 'font/PressStart2P.ttf')
-    when 'Hard'
-      Text.new("High Score: #{high_scores[2]}", x: 470, y: 10, size: 12,
-              color: 'black', font: 'font/PressStart2P.ttf')
+    file = File.new('high_score.txt', 'w')
+
+    if mode == 1
+
+      case difficulty
+
+      when 'Easy'
+        high_scores[0] = [player_scores[0], high_scores[0]].max
+      when 'Medium'
+        high_scores[1] = [player_scores[0], high_scores[1]].max
+      when 'Hard'
+        high_scores[2] = [player_scores[0], high_scores[2]].max
+      end
     end
+
+
+    File.open('high_score.txt', 'w') do |file|
+      high_scores.each { |score| file.puts score }
+    end
+
+    file.close
   end
-
-  Text.new("'r' - restart", x: 10, y: 10, size: 10,
-           color: 'black', font: 'font/PressStart2P.ttf')
-  Text.new("'esc' - menu", x: 10, y: 28, size: 10,
-           color: 'black', font: 'font/PressStart2P.ttf')
-
-  if game_screen.start_game == true
-    Text.new("Press 'space' to start", x: 165, y: 116,
-             size: 15, color: 'black',
-             font: 'font/PressStart2P.ttf')
-    if game_screen.mode == 0
-    Text.new("Reach 11 points first to win", x: 144, y: 161,
-              size: 14, color: 'black',
-              font: 'font/PressStart2P.ttf')
-    else
-    Text.new("Reach 99 points first to win", x: 144, y: 161,
-             size: 14, color: 'black',
-             font: 'font/PressStart2P.ttf')
-    end
-  end
-end
-
-def handle_input_game_screen(cur_screen, event)
-  game_screen = cur_screen.type
-  player1 = game_screen.player1
-  player2 = game_screen.player2
-
-  case event.type
-  when :held
-    case event.key
-    when 'w'
-      if game_screen.mode == 0
-        player1.direction = :up
-      end
-    when 's'
-      if game_screen.mode == 0
-        player1.direction = :down
-      end
-    when 'up'
-      if game_screen.mode == 0
-        player2.direction = :up
-      else
-        player1.direction = :up
-      end
-    when 'down'
-      if game_screen.mode == 0
-        player2.direction = :down
-      else
-        player1.direction = :down
-      end
-    when 'space'
-      # Check if the ball is not already moving
-      unless game_screen.ball_moving
-        game_screen.ball_moving = true unless game_screen.ball_moving
-      end
-      if game_screen.start_game == true
-        game_screen.start_game = false
-      end
-      if game_screen.end_game == true
-        game_screen.ball_moving = false
-      end
-    when 'r', 'esc'
-      cur_screen.type = GameScreen.new(game_screen.mode, game_screen.difficulty)
-    when 'escape'
-      cur_screen.type = ModeSelect.new
-    when 'return'
-      if game_screen.end_game == true
-        cur_screen.type = GameScreen.new(game_screen.mode, game_screen.difficulty)
-      end
-    end
-
-    when :up
-      case event.key
-      when 'w', 's'
-        if game_screen.mode == 0
-          player1.direction = nil
-        end
-      when 'up', 'down'
-        if game_screen.mode == 0
-          player2.direction = nil
-        else
-          player1.direction = nil
-        end
-      end
-    end
-end
-
