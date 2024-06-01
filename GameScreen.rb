@@ -18,13 +18,13 @@ class GameScreen
     case difficulty
     when 'Easy'
       @ball_velocity = 7
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 2)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
     when 'Medium'
       @ball_velocity = 8
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 2)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
     when 'Hard'
       @ball_velocity = 9
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 1)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 10)
     end
     @player_scores = [0, 0]
     @ball_moving = false
