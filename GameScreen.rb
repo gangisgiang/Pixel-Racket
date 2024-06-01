@@ -21,7 +21,7 @@ class GameScreen
       @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
     when 'Medium'
       @ball_velocity = 8
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 5)
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 6)
     when 'Hard'
       @ball_velocity = 9
       @player2 = Racket.new(:right, mode == 0 ? 8 : 10)
