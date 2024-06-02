@@ -20,7 +20,7 @@
       if racket.direction == :up
         racket.y = [racket.y - racket.movement, 0].max
       elsif racket.direction == :down
-        racket.y = [racket.y + racket.movement, cal_max_y_racket].min
+        racket.y = [racket.y + racket.movement, Window.height - HeightRacket].min
       end
   end
 
@@ -38,10 +38,6 @@
                    [shape_ball.x3, shape_ball.y3], [shape_ball.x4, shape_ball.y4]].any? do |coordinates|
       shape_racket.contains?(coordinates[0], coordinates[1])
     end
-  end
-
-  def cal_max_y_racket()
-    Window.height - HeightRacket
   end
 
   class Ball
@@ -147,11 +143,9 @@
     return high_scores
   end
 
-  def save_score(player_scores, mode, difficulty)
+  def save_score(player_scores, difficulty)
     high_scores = get_high_score
     file = File.new('high_score.txt', 'w')
-
-    if mode == 1
 
       case difficulty
 
@@ -162,7 +156,6 @@
       when 'Hard'
         high_scores[2] = [player_scores[0], high_scores[2]].max
       end
-    end
 
 
     File.open('high_score.txt', 'w') do |file|
