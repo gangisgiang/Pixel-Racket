@@ -4,37 +4,39 @@ PONG_SOUND = Sound.new('sound/pong.wav')
 PING_SOUND = Sound.new('sound/ping.wav')
 
 class GameScreen
-  attr_accessor :mode, :difficulty, :player_scores,
-                :ball_velocity, :ball_moving,
+  attr_accessor :ball_velocity, :mode,
+                :difficulty,
                 :player1, :player2,
+                :player_scores, :ball_moving,
                 :serve_side, :ball,
-                :start_game, :end_game, 
-                :dividing_line
+                :start_game, :end_game
 
   def initialize(mode, difficulty)
     @mode = mode # 0: 1vs1, 1: AI
+
+    if mode == 0
+      @ball_velocity = 7
+    end
+
     # @difficulties = ['Easy', 'Medium', 'Hard']
     @difficulty = difficulty
     case difficulty
     when 'Easy'
-      @ball_velocity = 7
+      @ball_velocity = 8
       @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
     when 'Medium'
-      @ball_velocity = 8
+      @ball_velocity = 9
       @player2 = Racket.new(:right, mode == 0 ? 8 : 6)
     when 'Hard'
-      @ball_velocity = 9
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 10)
+      @ball_velocity = 10
+      @player2 = Racket.new(:right, mode == 0 ? 8 : 8)
     end
-    @player_scores = [0, 0]
-    @ball_moving = false
-    @serve_side = 0
 
     @player1 = Racket.new(:left, 8)
 
-    if mode == 0
-      @ball_velocity = 8
-    end
+    @player_scores = [0, 0]
+    @ball_moving = false
+    @serve_side = 0
 
     @ball = Ball.new(@ball_velocity, @serve_side)
 
