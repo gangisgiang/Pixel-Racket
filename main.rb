@@ -9,16 +9,16 @@ set title: 'Pixel Racket'
 set width: 640
 set height: 480
 
+music = Music.new('sound/music.mp3')
+music.loop = true
+music.play
+
 class CurrentScreen
   attr_accessor :type
   def initialize
     @type = ModeSelect.new
   end
 end
-
-music = Music.new('sound/music.mp3')
-music.loop = true
-music.play
 
 # main part
 cur_screen = CurrentScreen.new

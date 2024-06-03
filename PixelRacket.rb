@@ -20,7 +20,7 @@ def move_racket(racket)
     if racket.direction == :up
       racket.y = [racket.y - racket.movement, 0].max
     elsif racket.direction == :down
-      racket.y = [racket.y + racket.movement, cal_max_y_racket].min
+      racket.y = [racket.y + racket.movement, Window.height - HeightRacket].min
     end
 end
 
@@ -40,21 +40,16 @@ def hit_ball?(ball, racket)
   end
 end
 
-
-def cal_max_y_racket()
-  Window.height - HeightRacket
-end
-
 class Ball
   attr_accessor :shape, :x, :y, :y_velocity, :x_velocity,
                 :speed, :last_hit_side, :serve_side
 
   def initialize(speed, serve_side)
     @x = 312
-    @y = (20 + 25) * 5 + 3
+    @y = 228
     @speed = speed
-    @y_velocity = [4, 5, 6 -4, -5, -6].to_a.sample
-    @x_velocity = [5, 6, 7, 8].to_a.sample * (serve_side == 0 ? 1 : -1)
+    @y_velocity = [4, 5, 6 -4, -5, -6].sample
+    @x_velocity = [5, 6].sample * (serve_side == 0 ? 1 : -1)
   end
 end
 
@@ -102,7 +97,6 @@ def bounce(racket, ball)
   end
 end
 
-
 def out_of_bounds?(ball)
   ball.x <= 0 || ball.x + HeightBall >= Window.width
 end
@@ -133,24 +127,46 @@ def draw_dividing_line
 end
 
 def get_high_score()
-  high_score = 0
+  high_scores = [0, 0, 0]
+
   if File.exist?("high_score.txt")
     file = File.new('high_score.txt', 'r')
-    high_score = file.gets.to_i
+      i = 0
+    while (line = file.gets)
+      high_scores[i] = line.to_i
+      i += 1
+    end
     file.close
   end
-  return high_score
+
+  return high_scores
 end
 
-def save_score(player_scores, mode)
-  old_high_score = get_high_score
+def save_score(player_scores, mode, difficulty)
+  high_scores = get_high_score
   file = File.new('high_score.txt', 'w')
-  if mode == 0
-    high_score = [old_high_score, player_scores.max].max
+
+  if mode == 1
+
+    case difficulty
+
+    when 'Easy'
+      high_scores[0] = [player_scores[0], high_scores[0]].max
+    when 'Medium'
+      high_scores[1] = [player_scores[0], high_scores[1]].max
+    when 'Hard'
+      high_scores[2] = [player_scores[0], high_scores[2]].max
+    end
+
+    File.open('high_score.txt', 'w') do |file|
+      high_scores.each { |score| file.puts score }
+    end
+  
   else
-    high_score = [old_high_score, player_scores[0]].max
+
+      high_scores.each { |score| file.puts score }
+
   end
 
-  file.puts high_score
   file.close
 end
