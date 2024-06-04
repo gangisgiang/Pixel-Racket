@@ -49,7 +49,7 @@ class Ball
     @y = 228
     @speed = speed
     @y_velocity = [4, 5, 6 -4, -5, -6].sample
-    @x_velocity = [5, 6].sample * (serve_side == 0 ? 1 : -1)
+    @x_velocity = [5, 6, 7].sample * (serve_side == 0 ? 1 : -1)
   end
 end
 
@@ -61,9 +61,9 @@ end
 
 def track_ball(racket, ball)
   if cal_y_middle(ball) > cal_y_middle(racket) + 15
-    racket.y += racket.movement
+    racket.y = [racket.y + racket.movement, Window.height - HeightRacket].min
   elsif cal_y_middle(ball) < cal_y_middle(racket) - 15
-    racket.y -= racket.movement
+    racket.y = [racket.y - racket.movement, 0].max
   end
 end
 
@@ -119,7 +119,7 @@ def cal_y_middle(object)
 end
 
 def draw_dividing_line
-  number_of_line = Window.height / (HEIGHT + 25) + 10
+  number_of_line = Window.height / (HEIGHT + 25) + 5
   number_of_line.times do |i|
     Rectangle.new(x: (Window.width - WIDTH) / 2, y: (HEIGHT + 25) * i,
                   height: HEIGHT, width: WIDTH, color: 'white')
@@ -163,7 +163,7 @@ def save_score(player_scores, mode, difficulty)
     end
   
   else
-
+      
       high_scores.each { |score| file.puts score }
 
   end
