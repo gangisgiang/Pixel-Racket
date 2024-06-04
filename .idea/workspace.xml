@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8ac4a9f-3c17-4720-aa4c-4905aa7833e1" name="Changes" comment="ball velocity 1 vs 1">
-      <change afterPath="$PROJECT_DIR$/font/snake.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GameScreen.rb" beforeDir="false" afterPath="$PROJECT_DIR$/GameScreen.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModeSelect.rb" beforeDir="false" afterPath="$PROJECT_DIR$/ModeSelect.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PixelRacket.rb" beforeDir="false" afterPath="$PROJECT_DIR$/PixelRacket.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/high_score.txt" beforeDir="false" afterPath="$PROJECT_DIR$/high_score.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,22 +40,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Ruby.GameScreen.executor&quot;: &quot;Run&quot;,
-    &quot;Ruby.main.executor&quot;: &quot;Run&quot;,
-    &quot;Ruby.snake.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ruby.structure.view.model.defaults.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Ruby.GameScreen.executor": "Run",
+    "Ruby.PixelRacket.executor": "Run",
+    "Ruby.main.executor": "Run",
+    "Ruby.snake.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "#2 on complete",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ruby.structure.view.model.defaults.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -73,6 +76,7 @@
       <workItem from="1715352618898" duration="3000" />
       <workItem from="1716918936603" duration="7447000" />
       <workItem from="1716984325509" duration="4712000" />
+      <workItem from="1717498859144" duration="2431000" />
     </task>
     <task id="LOCAL-00001" summary="music and exit game">
       <option name="closed" value="true" />
@@ -111,7 +115,8 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pingpong_1_@snake.rcov" NAME="snake Coverage Results" MODIFIED="1716926436889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
+    <SUITE FILE_PATH="coverage/pingpong_1_@PixelRacket.rcov" NAME="PixelRacket Coverage Results" MODIFIED="1717504644205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
     <SUITE FILE_PATH="coverage/pingpong_1_@GameScreen.rcov" NAME="GameScreen Coverage Results" MODIFIED="1716925977888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
-    <SUITE FILE_PATH="coverage/pingpong_1_@main.rcov" NAME="main Coverage Results" MODIFIED="1716926294970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
+    <SUITE FILE_PATH="coverage/pingpong_1_@main.rcov" NAME="main Coverage Results" MODIFIED="1717504647411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="pingpong(1)" />
   </component>
 </project>

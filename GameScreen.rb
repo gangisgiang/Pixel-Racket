@@ -14,22 +14,24 @@ class GameScreen
   def initialize(mode, difficulty)
     @mode = mode # 0: 1vs1, 1: AI
 
-    if mode == 0
-      @ball_velocity = 7
-    end
-
-    # @difficulties = ['Easy', 'Medium', 'Hard']
-    @difficulty = difficulty
-    case difficulty
-    when 'Easy'
-      @ball_velocity = 8
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
-    when 'Medium'
-      @ball_velocity = 9
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 6)
-    when 'Hard'
+    case mode
+    when 0
       @ball_velocity = 10
-      @player2 = Racket.new(:right, mode == 0 ? 8 : 8)
+      @player2 = Racket.new(:right, 8)
+    when 1
+      # @difficulties = ['Easy', 'Medium', 'Hard']
+      @difficulty = difficulty
+      case difficulty
+      when 'Easy'
+        @ball_velocity = 8
+        @player2 = Racket.new(:right, mode == 0 ? 8 : 4)
+      when 'Medium'
+        @ball_velocity = 9
+        @player2 = Racket.new(:right, mode == 0 ? 8 : 6)
+      when 'Hard'
+        @ball_velocity = 10
+        @player2 = Racket.new(:right, mode == 0 ? 8 : 8)
+      end
     end
 
     @player1 = Racket.new(:left, 8)
@@ -48,7 +50,8 @@ end
 
 def draw_game_screen(cur_screen)
   game_screen = cur_screen.type
-  save_score(game_screen.player_scores, game_screen.mode, game_screen.difficulty)
+  mode = game_screen.mode
+  save_score(game_screen.player_scores, mode, game_screen.difficulty)
 
   player1 = game_screen.player1
   player2 = game_screen.player2
@@ -69,7 +72,7 @@ def draw_game_screen(cur_screen)
   move_racket(player1)
   draw_racket(player1)
 
-  if game_screen.mode == 0
+  if mode == 0
     move_racket(player2)
   else
     track_ball(player2, ball)
@@ -183,6 +186,9 @@ def draw_game_screen(cur_screen)
              font: 'font/PressStart2P.ttf')
     if game_screen.mode == 0
     Text.new("Reach 11 points first to win", x: 144, y: 161,
+              size: 14, color: 'black',
+              font: 'font/PressStart2P.ttf')
+    Text.new("'w' - 's'   'up' - 'down'", x: 171, y: 350,
               size: 14, color: 'black',
               font: 'font/PressStart2P.ttf')
     else
