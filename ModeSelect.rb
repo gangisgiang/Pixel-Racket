@@ -10,6 +10,7 @@ class ModeSelect
 end
 
 def draw_mode_select(cur_screen)
+  mode_select_screen = cur_screen.type
   Text.new('Pixel Racket', x: 177, y: 80,
            size: 25, color: 'black',
            font: 'font/PressStart2P.ttf')
@@ -22,7 +23,6 @@ def draw_mode_select(cur_screen)
     Text.new(mode, x: 140 + index * 250, y: 250, size: 14,
              color: index == mode_select_screen.selected_mode ? 'blue' : 'white',
              font: 'font/PressStart2P.ttf')
-    mode_select_screen = cur_screen.type
     if mode_select_screen.selected_mode == 1  # Show difficulty text only for VS Computer mode
       mode_select_screen.difficulty_text = true
       mode_select_screen.difficulties.each_with_index do |difficulties, i|
@@ -64,8 +64,3 @@ def draw_mode_select(cur_screen)
     end
   end
 end
-
-
-
-
-
