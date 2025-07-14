@@ -31,7 +31,7 @@ def draw_mode_select(cur_screen)
                  font: 'font/PressStart2P.ttf')
       end
     else
-      mode_select_screen.difficulty_text = false  # Hide difficulty text for other modes
+      mode_select_screen.difficulty_text = false 
     end
         Text.new("Press 'esc' to exit game", x: 206, y: 430, size: 23,
                  color: 'black', font: 'font/Bradley Hand Bold.ttf')

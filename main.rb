@@ -16,10 +16,6 @@ class CurrentScreen
   end
 end
 
-music = Music.new('sound/music.mp3')
-music.loop = true
-music.play
-
 # main part
 cur_screen = CurrentScreen.new
 
