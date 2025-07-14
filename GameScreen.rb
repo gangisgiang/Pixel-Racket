@@ -9,8 +9,7 @@ class GameScreen
                 :player1, :player2,
                 :player_scores, :ball_moving,
                 :serve_side, :ball,
-                :start_game, :dividing_line
-  def initialize(mode, difficulty)
+                :start_game, :end_game
 
   def initialize(mode, difficulty)
     @mode = mode # 0: 1vs1, 1: AI
@@ -39,15 +38,11 @@ class GameScreen
     @ball_moving = false
     @serve_side = 0
 
-    @player1 = Racket.new(:left, 8)
-
-    if mode == 0
-      @ball_velocity = 8
-    end
-
     @ball = Ball.new(@ball_velocity, @serve_side)
 
     @start_game = true
+
+    @end_game = false
   end
 end
 
