@@ -7,7 +7,6 @@
     <list default="true" id="b8ac4a9f-3c17-4720-aa4c-4905aa7833e1" name="Changes" comment="ball velocity 1 vs 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GameScreen.rb" beforeDir="false" afterPath="$PROJECT_DIR$/GameScreen.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModeSelect.rb" beforeDir="false" afterPath="$PROJECT_DIR$/ModeSelect.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PixelRacket.rb" beforeDir="false" afterPath="$PROJECT_DIR$/PixelRacket.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/high_score.txt" beforeDir="false" afterPath="$PROJECT_DIR$/high_score.txt" afterDir="false" />
     </list>
@@ -47,7 +46,7 @@
     "Ruby.main.executor": "Run",
     "Ruby.snake.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "#2 on complete",
+    "git-widget-placeholder": "complete",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -76,7 +75,8 @@
       <workItem from="1715352618898" duration="3000" />
       <workItem from="1716918936603" duration="7447000" />
       <workItem from="1716984325509" duration="4712000" />
-      <workItem from="1717498859144" duration="2431000" />
+      <workItem from="1717498859144" duration="3194000" />
+      <workItem from="1722617270428" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="music and exit game">
       <option name="closed" value="true" />
@@ -102,11 +102,30 @@
       <option name="project" value="LOCAL" />
       <updated>1716925605382</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="ball velocity 1 vs 1">
+      <option name="closed" value="true" />
+      <created>1717514392368</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717514392368</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="music and exit game" />

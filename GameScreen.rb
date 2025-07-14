@@ -230,7 +230,7 @@ def handle_input_game_screen(cur_screen, event)
     when 'space'
       # Check if the ball is not already moving
       unless game_screen.ball_moving
-        game_screen.ball_moving = true unless game_screen.ball_moving
+        game_screen.ball_moving = true
       end
       if game_screen.start_game == true
         game_screen.start_game = false
@@ -263,4 +263,3 @@ def handle_input_game_screen(cur_screen, event)
       end
     end
 end
-

@@ -169,4 +169,5 @@ def save_score(player_scores, mode, difficulty)
   end
 
   file.close
+  
 end
